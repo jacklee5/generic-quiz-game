@@ -1,9 +1,17 @@
 const express = require("express");
+const passport = require("passport");
+const session = require("express-session");
+const RedisStore = require("connect-redis")(session);
+
 const app = express();
-const port = 3000 || process.env.PORT;
+app.use(session({
+  store: new RedisStore({
+    url: config.redisStore.url
+  }),
+  secret: config.redisStore.secret,
+  resave: false,
+  saveUninitialized: false
+}));
 
-app.use("static", express.static("static"));
-
-app.get('/', (req, res) => res.sendFile(__dirname + "/views/index.html"));
-
-app.listen(port, () => console.log("Example app listening on port ${port}!"));
+app.use(passport.initialize());
+app.use(passport.session());

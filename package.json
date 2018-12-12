@@ -19,7 +19,13 @@
   },
   "homepage": "https://github.com/jacklee5/generic-quiz-game#readme",
   "dependencies": {
+    "bcrypt": "^3.0.2",
+    "connect-redis": "^3.4.0",
     "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "handlebars": "^4.0.12",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "socket.io": "^2.2.0"
   }
 }

@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Finish Creating Account</title>
+    <style>
+      .error{
+        color:white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Finish Creating Your Account, <%=displayName%></h1>
+    <div class = "error"><%=err||""%></div>
+    <form action = "/create-account" method = "POST">
+      <label>Username</label>
+      <input type = "text" name = "username"><br><br>
+      <input type = "submit" value = "Create">
+    </form>
+  </body>
+</html>

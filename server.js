@@ -33,14 +33,30 @@ passport.use(new GoogleStrategy({
     }
 ));
 
+//store google data for users that haven't been created yet
+const googleData = {}
+
 // Used to stuff a piece of information into a cookie
 passport.serializeUser((user, done) => {
-    done(null, user);
+    console.log("serialize: " + JSON.stringify(user.id));
+    
+    done(null, user.id);
 });
 
 // Used to decode the received cookie and persist session
-passport.deserializeUser((user, done) => {
-    done(null, user);
+passport.deserializeUser((id, done) => {
+    pool.query("SELECT * FROM users WHERE google_id = ?", [id], (err, results, fields) => {
+        if(err) return console.log(err);
+        if(!results[0]) return done(null, {
+            id: results[0].google_id,
+            photo: results[0].photo
+        });
+        done(null, {
+            id: results[0].google_id,
+            username: results[0].username,
+            photo: results[0].photo
+        });
+    });
 });
 
 // Middleware to check if the user is authenticated
@@ -48,7 +64,7 @@ function isUserAuthenticated(req, res, next) {
     if (req.user) {
         next();
     } else {
-        res.send('You must login!');
+        res.redirect("/auth/google");
     }
 }
 
@@ -64,6 +80,8 @@ pool.query('SELECT * FROM users', function (error, results, fields) {
     console.log('Result ', results);
 });
 
+//statica
+app.use("/static", express.static("static"));
 
 // Routes
 app.get('/', (req, res) => {
@@ -80,24 +98,31 @@ app.get('/auth/google/callback', passport.authenticate('google'), (req, res) => 
     pool.query("SELECT username FROM users WHERE google_id = ?", [req.user.id], (err, result) => {
         if(err) return console.log(err), res.send("an error occured");
         if(result[0]){
-            res.send(`welcome back, ${result[0].username}`);
+            res.redirect("/account");
         }else{
             res.redirect("/create-account");
         }
     });
 });
 
-// Secret route
-app.get('/create-account', isUserAuthenticated, (req, res) => {
-    res.render("create-account", {displayName: req.user.displayName});
+//account route
+app.get("/account", isUserAuthenticated, (req, res) => {
+    res.render("account.ejs", {
+        username: req.user.username,
+        pfp: req.user.photo
+    })
 });
 
 // create account route
-app.post("/create-account", (req, res) => {
-    pool.query("INSERT INTO users (username, google_id, photo) VALUES (?, ?, ?)", [req.body.username, req.user.id, req.user.photos[0].value], (err) => {
+app.get('/create-account', isUserAuthenticated, (req, res) => {
+    res.render("create-account");
+});
+app.post("/create-account", isUserAuthenticated, (req, res) => {
+    console.log(JSON.stringify(req.user));
+    pool.query("INSERT INTO users (username, google_id, photo) VALUES (?, ?, ?)", [req.body.username, req.user.id, req.user.photo], (err) => {
         if(err) return console.log(err), res.render("create-account", {display: req.user.displayName, err: "Username already exists!"});
-        console.log(`Successfully created new account:\n\tUsername: ${req.body.username}\n\tGoogle ID: ${req.user.id}\n\tPhoto: ${req.user.photos[0].value}`);
-        res.send("created your account!");
+        console.log(`Successfully created new account:\n\tUsername: ${req.body.username}\n\tGoogle ID: ${req.user.id}\n\tPhoto: ${req.user.photo}`);
+        res.redirect("/account");
     });
 })
 

@@ -1,0 +1,24 @@
+/* normalize */
+body{
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* theme */
+background-primary{
+    background: rgba(131, 182, 146, 1);
+}
+background-secondary{
+    background: rgba(249, 173, 160, 1)
+}
+color-primray{
+    color: rgba(131, 182, 146, 1);
+}
+color-secondary{
+    color: rgba(249, 173, 160, 1);
+}
+
+/* layout */
+aside{
+    
+}

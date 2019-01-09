@@ -9,11 +9,15 @@
     </style>
   </head>
   <body>
-    <h1>Finish Creating Your Account, <%=displayName%></h1>
-    <div class = "error"><%=err||""%></div>
+    <h1>Finish Creating Your Account</h1>
+    <div class="error">
+      <% if (this.err) { %>
+        <%=err%>
+      <% } %>
+    </div>
     <form action = "/create-account" method = "POST">
       <label>Username</label>
-      <input type = "text" name = "username"><br><br>
+      <input type = "text" name = "username" maxlength="30"><br><br>
       <input type = "submit" value = "Create">
     </form>
   </body>

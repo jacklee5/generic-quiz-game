@@ -38,8 +38,8 @@ const googleData = {}
 
 // Used to stuff a piece of information into a cookie
 passport.serializeUser((user, done) => {
-    console.log("serialize: " + JSON.stringify(user.id));
-    
+    if(user.provider) googleData[user.id] = user;
+    console.log("serializing " + user.id);
     done(null, user.id);
 });
 
@@ -47,10 +47,14 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
     pool.query("SELECT * FROM users WHERE google_id = ?", [id], (err, results, fields) => {
         if(err) return console.log(err);
-        if(!results[0]) return done(null, {
-            id: results[0].google_id,
-            photo: results[0].photo
-        });
+        if(!results[0]){
+            done(null, {
+                id: googleData[id].id,
+                photo: googleData[id].photos[0].value
+            });
+            return;
+        }
+        if(googleData[id]) delete googleData[id];
         done(null, {
             id: results[0].google_id,
             username: results[0].username,

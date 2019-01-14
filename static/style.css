@@ -5,20 +5,30 @@ body{
 }
 
 /* theme */
-background-primary{
+.background-primary{
     background: rgba(131, 182, 146, 1);
 }
-background-secondary{
+.background-secondary{
     background: rgba(249, 173, 160, 1)
 }
-color-primray{
+.color-primray{
     color: rgba(131, 182, 146, 1);
 }
-color-secondary{
+.color-secondary{
     color: rgba(249, 173, 160, 1);
 }
 
-/* layout */
-aside{
-    
+/* components */
+/* header */
+header{
+    height: 256px;
+    text-align: center;
+}
+header .pfp{
+    border-radius: 50%;
+    height: 64px;
+
+}
+header h1{
+    margin: 0;
 }

@@ -1,0 +1,45 @@
+body{
+    background:  rgba(249, 173, 160, 1);
+    color: rgba(249, 98, 125, 1);
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+    padding: 30px;
+}
+h2{
+    font-family: cursive;
+}
+button{
+    border: none;
+    padding: 0;
+    background: white;
+}
+.jake{
+    height: 400px;
+    width: auto;
+}
+.gglPhoto{
+    height: auto;
+    width: 340px;
+}
+@keyframes animation{
+    50% {
+        background-color: white;
+    }
+    100%{
+        background-color: black;
+    }
+}
+#hmm {
+    align-content: left;
+    height: 200px;
+    width: auto;
+    padding-right: 300px;
+    padding-bottom: 100px;
+}
+#hmm2 {
+    align-content: right;
+    height: 200px;
+    width: auto;
+    padding-left: 300px;
+    padding-bottom: 100px;
+}

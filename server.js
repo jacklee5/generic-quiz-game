@@ -89,7 +89,7 @@ app.use("/static", express.static("static"));
 
 // Routes
 app.get('/', (req, res) => {
-    res.render('index');
+    res.sendFile(__dirname + '/views/login.html');
 });
 
 // passport.authenticate middleware is used here to authenticate the request

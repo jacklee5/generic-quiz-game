@@ -36,7 +36,6 @@ header{
 header .pfp{
     border-radius: 50%;
     height: 64px;
-
 }
 header h1{
     margin: 0;
@@ -77,3 +76,23 @@ button:active{
 button:focus{
     outline: none;
 }
+/* 
+.Lists{
+    padding-top: 80px;
+    width: 50%;
+    text-align: center;
+    font-family: cursive;
+    font-size: 30px
+}
+li{
+    list-style-position: inside;
+}
+.SetsList{
+    float: left;
+    text-align: left;
+}
+.FriendsList{
+    float: right;
+    text-align: ;
+}
+*/

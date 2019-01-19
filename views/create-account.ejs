@@ -2,24 +2,24 @@
 <html>
   <head>
     <title>Finish Creating Account</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <style>
-      .error{
-        color:white;
-      }
-    </style>
+    <%- include partials/meta.ejs %>
   </head>
   <body>
-    <h1>Finish Creating Your Account</h1>
-    <div class="error">
-      <% if (this.err) { %>
-        <%=err%>
-      <% } %>
-    </div>
-    <form action = "/create-account" method = "POST">
-      <label>Username</label>
-      <input type = "text" name = "username" maxlength="30"><br><br>
-      <input type = "submit" value = "Create">
-    </form>
+    <header class = "background-primary">
+      <h1>Finish Creating Your Account</h1>
+    </header>
+    <br>
+    <main class = "center-text">
+      <div class="error">
+        <% if (this.err) { %>
+          <%=err%>
+        <% } %>
+      </div>
+      <form action = "/create-account" method = "POST">
+        <label>Username</label>
+        <input type = "text" name = "username" maxlength="30"><br><br>
+        <input type = "submit" value = "Create">
+      </form>
+    </main>
   </body>
 </html>

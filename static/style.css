@@ -2,6 +2,12 @@
 body{
     margin: 0;
     box-sizing: border-box;
+    font-family: "PT Sans", sans-serif;
+}
+
+/* layout */
+.center-text{
+    text-align: center
 }
 
 /* theme */
@@ -17,12 +23,15 @@ body{
 .color-secondary{
     color: rgba(249, 173, 160, 1);
 }
+h1, h2, h3, h4, h5, h6{
+    font-family: "Staatliches", sans-serif;
+}
 
 /* components */
 /* header */
 header{
-    height: 256px;
     text-align: center;
+    padding: 64px;
 }
 header .pfp{
     border-radius: 50%;
@@ -31,4 +40,40 @@ header .pfp{
 }
 header h1{
     margin: 0;
+}
+/* main */
+main{
+    padding: 32px;
+    background: #F5F5F5;
+}
+/* input */
+label + input{
+    margin-left: 16px;
+}
+input[type='text']{
+    border: none;
+    padding: 8px;
+    border-bottom: #BDBDBD 1px solid;
+    transition: all .3s;
+    background: transparent;
+}
+input[type='text']:focus{
+    outline: none;
+    border-color: #F9627D;
+}
+/* button */
+button{
+    border: none;
+    padding: 16px;
+    text-transform: uppercase;
+    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: .3s all;
+    font-weight: 700;
+}
+button:active{
+    box-shadow: 1px 3px 2px rgba(0, 0, 0, 0.15);
+}
+button:focus{
+    outline: none;
 }

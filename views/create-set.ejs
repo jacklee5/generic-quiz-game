@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Create New Set</title>
+    <%- include partials/meta.ejs %>
+    <style>
+        /* term */
+        .term{
+            background: white;
+            box-shadow: 1px 3px 5px rgba(0,0,0,0.3);
+            display: block;
+            padding: 16px 32px;
+            margin: 32px 0px;
+            position: relative;
+            white-space: nowrap;
+        }
+        .term input{
+            width: calc(50% - 40px);
+            white-space: initial;
+            margin: 0px 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class = "background-primary">
+        <h1>Create Set</h1>
+    </header>
+    <main>
+        <form action = "/create-set" method = "POST">
+            <label>Set Name: </label>
+            <input type = "text" name = "setname">
+
+            <div class = "term">
+                <input type = "text" name = "terms" placeholder = "term">
+                <input type = "text" name = "definitions" placeholder = "definition">
+            </div>
+
+            <div class = "term">
+                <input type = "text" name = "terms" placeholder = "term">
+                <input type = "text" name = "definitions" placeholder = "definition">
+            </div>
+            <button class = "background-secondary">Create Set</button>
+        </form>
+    </main>
+    <script>
+        
+    </script>
+</body>
+
+</html>

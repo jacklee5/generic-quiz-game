@@ -65,7 +65,7 @@ passport.deserializeUser((id, done) => {
 
 // Middleware to check if the user is authenticated
 function isUserAuthenticated(req, res, next) {
-    if (req.user) {
+    if (req.user && !googleData[req.user.id]) {
         next();
     } else {
         res.redirect("/auth/google");
@@ -84,13 +84,8 @@ pool.query('SELECT * FROM users', function (error, results, fields) {
     console.log('Result ', results);
 });
 
-//statica
+//static
 app.use("/static", express.static("static"));
-
-// Routes
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/views/login.html');
-});
 
 // passport.authenticate middleware is used here to authenticate the request
 app.get('/auth/google', passport.authenticate('google', {
@@ -109,6 +104,20 @@ app.get('/auth/google/callback', passport.authenticate('google'), (req, res) => 
     });
 });
 
+// Routes
+app.get('/', (req, res) => {
+    if (req.user && !googleData[req.user.id]) res.redirect("/account");
+    res.render("login");
+});
+
+//create set
+app.get("/create-set", isUserAuthenticated, (req, res) => {
+    res.render("create-set");
+});
+app.post("/create-set", isUserAuthenticated, (req, res) => {
+    console.log(JSON.stringify(req.body));
+})
+
 //account route
 app.get("/account", isUserAuthenticated, (req, res) => {
     res.render("account.ejs", {
@@ -118,11 +127,13 @@ app.get("/account", isUserAuthenticated, (req, res) => {
 });
 
 // create account route
-app.get('/create-account', isUserAuthenticated, (req, res) => {
+app.get('/create-account', (req, res) => {
+    if(!req.user) return res.redirect("/");
     res.render("create-account");
 });
-app.post("/create-account", isUserAuthenticated, (req, res) => {
+app.post("/create-account", (req, res) => {
     console.log(JSON.stringify(req.user));
+    if (!req.user) return res.redirect("/");
     pool.query("INSERT INTO users (username, google_id, photo) VALUES (?, ?, ?)", [req.body.username, req.user.id, req.user.photo], (err) => {
         if(err) return console.log(err), res.render("create-account", {display: req.user.displayName, err: "Username already exists!"});
         console.log(`Successfully created new account:\n\tUsername: ${req.body.username}\n\tGoogle ID: ${req.user.id}\n\tPhoto: ${req.user.photo}`);

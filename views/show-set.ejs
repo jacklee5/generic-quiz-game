@@ -40,28 +40,19 @@
 
 <body>
     <header class = "background-primary">
-        <h1>Create Set</h1>
+        <h1>Set Name</h1>
     </header>
     <main>
-        <form action = "/create-set" method = "POST">
-            <label>Set Name: </label>
-            <input maxlength = "30" type = "text" name = "setname">
+    <form action = "/create-set" method = "POST">
+        <div id = "terms">
+            theoretically, there will be terms here
+        </div>
 
-            <div id = "terms">
-                <div class = "term container">
-                    <input type = "text" name = "terms" placeholder = "term">
-                    <input type = "text" name = "definitions" placeholder = "definition">
-                </div>
-            </div>
-
-            <div id = "add-term" class = "container">
-                <b>Add Term</b>
-            </div>
-
-            <button class = "background-secondary">Create Set</button>
-        </form>
+        <div id = "add-term" class = "container">
+            <b>Add Term</b>
+        </div>
+    </form>
     </main>
-    <script src = "/static/create-set.js"></script>
 </body>
 
 </html>

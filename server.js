@@ -77,7 +77,8 @@ const pool  = mysql.createPool({
     host            : 'den1.mysql1.gear.host',
     user            : 'genericquizgame',
     password        : 'Pd234wVLHe~?',
-    database        : 'genericquizgame'
+    database        : 'genericquizgame',
+    multipleStatements: true
 });
 pool.query('SELECT * FROM users', function (error, results, fields) {
     if (error) throw error;
@@ -116,6 +117,34 @@ app.get("/create-set", isUserAuthenticated, (req, res) => {
 });
 app.post("/create-set", isUserAuthenticated, (req, res) => {
     console.log(JSON.stringify(req.body));
+
+    let termData = [];
+    if(typeof req.body.terms === "string"){
+        req.body.terms = [req.body.terms];
+        req.body.definitions = [req.body.definitions];
+    }
+    for(let i = 0; i < req.body.terms.length; i++){
+        termData.push([0, req.body.terms[i], req.body.definitions[i]]);
+    }
+
+    //set -> set_id, name
+    //term -> term_id, set_id, term, definition
+    pool.query("INSERT INTO TermSet (name) VALUES (?)", [req.body.setname], (err, results, fields) => {
+        if(err) return console.log(err);
+        let insertId = results.insertId;
+        termData = termData.map(x => [insertId, x[1], x[2]]);
+        console.log(termData);
+        pool.query("INSERT INTO Term (set_id, term, definition) VALUES ?", [termData], (err, results, fields) => {
+            if(err) return console.log(err);
+            console.log("allow us to proceed");
+            res.redirect("/show-set/" + insertId);
+        })
+    })
+})
+
+//display set
+app.get("/show-set/:setid", (req, res) => {
+    res.render("show-set");
 })
 
 //account route

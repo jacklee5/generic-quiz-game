@@ -42,7 +42,7 @@ header h1{
 }
 /* main */
 main{
-    padding: 32px;
+    padding: 32px 64px;
     background: #F5F5F5;
 }
 /* input */

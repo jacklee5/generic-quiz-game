@@ -76,23 +76,24 @@ button:active{
 button:focus{
     outline: none;
 }
-/* 
+
 .Lists{
-    padding-top: 80px;
-    width: 50%;
     text-align: center;
     font-family: cursive;
-    font-size: 30px
+    font-size: 30px;
+    display: inline-block;
+    transform: translateX(100%);
 }
-li{
-    list-style-position: inside;
-}
+
 .SetsList{
     float: left;
-    text-align: left;
+    padding-right: 50px;
+    
 }
+
 .FriendsList{
     float: right;
-    text-align: ;
+    
+    
 }
-*/
+

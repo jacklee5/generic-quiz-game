@@ -45,17 +45,17 @@
     <main>
         <form action = "/create-set" method = "POST">
             <label>Set Name: </label>
-            <input maxlength = "30" type = "text" name = "setname">
+            <input maxlength = "30" type = "text" name = "setname" required>
 
             <div id = "terms">
                 <div class = "term container">
-                    <input type = "text" name = "terms" placeholder = "term">
-                    <input type = "text" name = "definitions" placeholder = "definition">
+                    <input type = "text" name = "terms" placeholder = "term" required>
+                    <input type = "text" name = "definitions" placeholder = "definition" required>
                 </div>
             </div>
 
-            <div id = "add-term" class = "container">
-                <b>Add Term</b>
+            <div id = "add-term" class = "container" style = "font-size: 14px">
+                <b><i class = "material-icons" style = "vertical-align: bottom;font-size:18px;margin-right:4px;">add</i>Add Term</b>
             </div>
 
             <button class = "background-secondary">Create Set</button>

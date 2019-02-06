@@ -1,8 +1,12 @@
 /* normalize */
 body{
     margin: 0;
-    box-sizing: border-box;
     font-family: "PT Sans", sans-serif;
+    background: rgb(242, 239, 234);
+}
+
+*{
+    box-sizing: border-box;
 }
 
 /* layout */
@@ -12,16 +16,16 @@ body{
 
 /* theme */
 .background-primary{
-    background: rgba(131, 182, 146, 1);
+    background: rgba(252, 119, 83, 1);
 }
 .background-secondary{
-    background: rgba(249, 173, 160, 1)
+    background: rgba(102, 215, 209, 1);
 }
 .color-primray{
-    color: rgba(131, 182, 146, 1);
+    color: rgba(252, 119, 83, 1);
 }
 .color-secondary{
-    color: rgba(249, 173, 160, 1);
+    color: rgba(102, 215, 209, 1);
 }
 h1, h2, h3, h4, h5, h6{
     font-family: "Staatliches", sans-serif;
@@ -43,7 +47,7 @@ header h1{
 /* main */
 main{
     padding: 32px 64px;
-    background: #F5F5F5;
+    position: relative;
 }
 /* input */
 label + input{
@@ -69,31 +73,64 @@ button{
     cursor: pointer;
     transition: .3s all;
     font-weight: 700;
+    line-height: 24px;
 }
 button:active{
-    box-shadow: 1px 3px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: 1px 3px 2px rgba(0, 0, 0, 0.1);
 }
 button:focus{
     outline: none;
 }
-
-.Lists{
-    
-    font-family: cursive;
-    font-size: 30px;
+button .material-icons{
+    font-size: 24px;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+/* set/friend lists */
+.sets{
+    width: 75%;
+}
+.friends{
+    width: 20%;
+}
+.list{
+    display:inline-block;
+    font-size: initial;
+    vertical-align: top;
+    position: relative;
+    padding: 16px;
+}
+.list h1{
+    margin: 0;
+}
+.list-container{
+    font-size:0;
+}
+/* icon button */
+.icon-button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    border-radius: 50%;
+    color: black;
     display: inline-block;
-    transform: translateX(100%);
+    padding: 4px;
+    height: 32px;
+    width: 32px;
+    text-align: center;
+    line-height: 32px;
+    margin-top: 4px;
 }
-
-.SetsList{
-    float: left;
-    padding-right: 50px;
-    
+/* set preview */
+.set{
+    padding: 32px;
+    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.3);
+    background: white;
+    margin: 16px 0px;
+    color: black;
+    display: block;
+    text-decoration: none;
 }
-
-.FriendsList{
-    float: right;
-    
-    
+.set p, .set h2{
+    margin: 0;
 }
-

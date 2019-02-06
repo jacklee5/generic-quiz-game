@@ -24,8 +24,8 @@ app.use(bodyParser.json());
 
 // Strategy config
 passport.use(new GoogleStrategy({
-        clientID: '610620061218-qh6dr7f6hibsd5aubpajqrvon6qsjnfm.apps.googleusercontent.com',
-        clientSecret: 'T2_8zmww7jx7BieRCbVVw-gi',
+        clientID: '610620061218-7o8o31ebmroqhnfa5n9rp16h3a3s65as.apps.googleusercontent.com',
+        clientSecret: 'eyr1llCNsCEvwVaBqqLmZ7Nz',
         callbackURL: 'http://localhost:8000/auth/google/callback'
     },
     (accessToken, refreshToken, profile, done) => {
@@ -39,7 +39,6 @@ const googleData = {}
 // Used to stuff a piece of information into a cookie
 passport.serializeUser((user, done) => {
     if(user.provider) googleData[user.id] = user;
-    console.log("serializing " + user.id);
     done(null, user.id);
 });
 
@@ -56,6 +55,7 @@ passport.deserializeUser((id, done) => {
         }
         if(googleData[id]) delete googleData[id];
         done(null, {
+            user_id: results[0].id,
             id: results[0].google_id,
             username: results[0].username,
             photo: results[0].photo
@@ -79,10 +79,6 @@ const pool  = mysql.createPool({
     password        : 'Pd234wVLHe~?',
     database        : 'genericquizgame',
     multipleStatements: true
-});
-pool.query('SELECT * FROM users', function (error, results, fields) {
-    if (error) throw error;
-    console.log('Result ', results);
 });
 
 //static
@@ -116,8 +112,6 @@ app.get("/create-set", isUserAuthenticated, (req, res) => {
     res.render("create-set");
 });
 app.post("/create-set", isUserAuthenticated, (req, res) => {
-    console.log(JSON.stringify(req.body));
-
     let termData = [];
     if(typeof req.body.terms === "string"){
         req.body.terms = [req.body.terms];
@@ -129,29 +123,40 @@ app.post("/create-set", isUserAuthenticated, (req, res) => {
 
     //set -> set_id, name
     //term -> term_id, set_id, term, definition
-    pool.query("INSERT INTO TermSet (name) VALUES (?)", [req.body.setname], (err, results, fields) => {
+    pool.query("INSERT INTO TermSet (name, creator_id) VALUES (?, ?)", [req.body.setname, req.user.user_id], (err, results, fields) => {
         if(err) return console.log(err);
         let insertId = results.insertId;
         termData = termData.map(x => [insertId, x[1], x[2]]);
-        console.log(termData);
         pool.query("INSERT INTO Term (set_id, term, definition) VALUES ?", [termData], (err, results, fields) => {
             if(err) return console.log(err);
-            console.log("allow us to proceed");
             res.redirect("/show-set/" + insertId);
         })
     })
 })
 
-//display set
+//show set route
 app.get("/show-set/:setid", (req, res) => {
-    res.render("show-set");
+    pool.query(`
+    SELECT term, definition, TermSet.name, Users.username
+    FROM Term, TermSet, Users
+    WHERE TermSet.set_id = ?
+    AND Term.set_id = TermSet.set_id
+    AND (TermSet.creator_id = users.id OR TermSet.creator_id IS NULL)`, [req.params.setid], (err, results, fields) => {
+        if(err) return console.log(err);
+        if(results.length < 1) return res.send("an error occured but we don't know what");
+        res.render("show-set", {setTitle: results[0].name, creatorName: results[0].username, terms: results});
+    })
 })
 
 //account route
 app.get("/account", isUserAuthenticated, (req, res) => {
-    res.render("account.ejs", {
-        username: req.user.username,
-        pfp: req.user.photo
+    pool.query("SELECT set_id, name FROM termset WHERE creator_id = ?", [req.user.user_id], (err, results, fields) => {
+        if(err) return console.log(err);
+        res.render("account.ejs", {
+            username: req.user.username,
+            pfp: req.user.photo,
+            sets: results
+        });
     })
 });
 
@@ -161,7 +166,6 @@ app.get('/create-account', (req, res) => {
     res.render("create-account");
 });
 app.post("/create-account", (req, res) => {
-    console.log(JSON.stringify(req.user));
     if (!req.user) return res.redirect("/");
     pool.query("INSERT INTO users (username, google_id, photo) VALUES (?, ?, ?)", [req.body.username, req.user.id, req.user.photo], (err) => {
         if(err) return console.log(err), res.render("create-account", {display: req.user.displayName, err: "Username already exists!"});

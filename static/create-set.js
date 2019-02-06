@@ -8,11 +8,13 @@ const createTerm = () => {
     termInput.type = "text";
     termInput.name = "terms";
     termInput.placeholder = "term";
+    termInput.required = true;
 
     const definitionInput = document.createElement("input");
     definitionInput.type = "text";
     definitionInput.name = "definitions";
     definitionInput.placeholder = "definition";
+    termInput.required = true;
 
     newTerm.appendChild(termInput);
     newTerm.appendChild(definitionInput);

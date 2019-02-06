@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Create New Set</title>
+    <title><%=setTitle%></title>
     <%- include partials/meta.ejs %>
     <style>
         /* container */
@@ -23,6 +23,7 @@
             width: calc(50% - 40px);
             white-space: initial;
             margin: 0px 8px;
+            border: none;
         }
 
         /* add term button */
@@ -40,18 +41,17 @@
 
 <body>
     <header class = "background-primary">
-        <h1>Set Name</h1>
+        <h1><%=setTitle%></h1>
+        <b>Created by <%=creatorName%></b>
     </header>
     <main>
-    <form action = "/create-set" method = "POST">
-        <div id = "terms">
-            theoretically, there will be terms here
+    <button class = "background-secondary"><i class = "material-icons">play_arrow</i>Play</button>
+    <% for(let i = 0; i < terms.length; i++) { %>
+        <div class = "term container">
+            <input type = "text" name = "terms" placeholder = "term" readonly value = "<%-value=terms[i].term%>">
+            <input type = "text" name = "definitions" placeholder = "definition" readonly value = "<%=terms[i].definition%>">
         </div>
-
-        <div id = "add-term" class = "container">
-            <b>Add Term</b>
-        </div>
-    </form>
+    <% } %>
     </main>
 </body>
 

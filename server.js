@@ -172,6 +172,23 @@ app.post("/create-account", (req, res) => {
         console.log(`Successfully created new account:\n\tUsername: ${req.body.username}\n\tGoogle ID: ${req.user.id}\n\tPhoto: ${req.user.photo}`);
         res.redirect("/account");
     });
+});
+
+app.get("/api/get-set/:setid", (req, res) => {
+    pool.query(`
+    SELECT term, definition, TermSet.name, Users.username
+    FROM Term, TermSet, Users
+    WHERE TermSet.set_id = ?
+    AND Term.set_id = TermSet.set_id
+    AND (TermSet.creator_id = users.id OR TermSet.creator_id IS NULL)`, [req.params.setid], (err, results, fields) => {
+        if (err) return console.log(err);
+        if (results.length < 1) return res.send("an error occured but we don't know what");
+        res.send(JSON.stringify({
+            setTitle: results[0].name,
+            creatorName: results[0].username,
+            terms: results
+        }));
+    })
 })
 
 // Logout route

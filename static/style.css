@@ -78,7 +78,6 @@ button:focus{
 }
 
 .Lists{
-    
     font-family: cursive;
     font-size: 30px;
     display: inline-block;
@@ -87,13 +86,11 @@ button:focus{
 
 .SetsList{
     float: left;
-    padding-right: 50px;
-    
+    padding-right: 50px;   
 }
 
 .FriendsList{
     float: right;
-    
     
 }
 

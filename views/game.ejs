@@ -4,16 +4,41 @@
         <title>Game!</title>
         <%- include partials/meta.ejs %>
         <style>
-            .game-buttons{
-                margin: 10px 20px 10px 10px;
-                display: inline-block;
-                height: calc(50vh - 148px);
-                width: 48%;
+            /*move this shit to style*/
+            main{
+                text-align: center;
             }
+            #qstn{
+                font-family: "PT-Sans", sans-serif;
+                font-size: 36pt;
+                white-space: nowrap;
+                position: relative;
+            }
+            .question_head{
+                position: relative;
+            }
+            .qMan{
+                height: 150px;
+                width: auto;
+            }
+            #qMan_left{
+                position: relative;
+                float: left;
+            }
+            #qMan_right{
+                position: relative;
+                float: right;
+            }
+
         </style>
     </head>
     <body>
-        <header id = "qstn" class = "background-primary">Question #0: Example Question Here</header>
+        <header class = "background-primary question_head">
+            <img id = "qMan_left" class = "qMan" src = static\smallQMan.png> 
+            <img id = "qMan_right" class = "qMan" src = static\smallQMan.png>  
+            <p id = "qstn">Question #0: Example Question Here</p>
+            
+        </header>
         <main>
             <div>
                 <button id = "btn1" class = "background-secondary button game-buttons">Answer 1</button>

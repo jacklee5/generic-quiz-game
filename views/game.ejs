@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Game!</title>
+        <%- include partials/meta.ejs %>
+        <style>
+            .game-buttons{
+                margin: 10px 20px 10px 10px;
+                display: inline-block;
+                height: calc(50vh - 148px);
+                width: 48%;
+            }
+        </style>
+    </head>
+    <body>
+        <header id = "qstn" class = "background-primary">Question #0: Example Question Here</header>
+        <main>
+            <div>
+                <button id = "btn1" class = "background-secondary button game-buttons">Answer 1</button>
+                <button id = "btn2" class = "background-secondary button game-buttons">Answer 2</button>
+                <br>
+                <button id = "btn3" class = "background-secondary button game-buttons">Answer 3</button>
+                <button id = "btn4" class = "background-secondary button game-buttons">Answer 4</button>
+            </div>
+        </main> 
+    </body>
+</html>

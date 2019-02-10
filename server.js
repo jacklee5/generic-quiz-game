@@ -148,6 +148,10 @@ app.get("/show-set/:setid", (req, res) => {
     })
 })
 
+app.get("/game", (req, res) => {
+    res.render("game");
+})
+
 //account route
 app.get("/account", isUserAuthenticated, (req, res) => {
     pool.query("SELECT set_id, name FROM termset WHERE creator_id = ?", [req.user.user_id], (err, results, fields) => {

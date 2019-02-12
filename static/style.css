@@ -80,6 +80,7 @@ button{
     transition: .3s all;
     font-weight: 700;
     line-height: 24px;
+    white-space: nowrap;
 }
 button:active{
     box-shadow: 1px 3px 2px rgba(0, 0, 0, 0.1);
@@ -167,4 +168,12 @@ button .material-icons{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.game-buttons{
+    display: inline-block;
+    margin: 10px 10px 10px 10px;
+    height: calc(45vh - 148px);
+    width: 45%;
+    font-size: 24pt;
 }

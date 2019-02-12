@@ -2,8 +2,8 @@
 <html>
 
 <head>
-    <title><%=setTitle%></title>
     <%- include partials/meta.ejs %>
+    <title>Loading Set...</title>
     <style>
         /* container */
         .container{
@@ -40,19 +40,21 @@
 </head>
 
 <body>
-    <header class = "background-primary">
-        <h1><%=setTitle%></h1>
-        <b>Created by <%=creatorName%></b>
-    </header>
-    <main>
-    <button class = "background-secondary"><i class = "material-icons">play_arrow</i>Play</button>
-    <% for(let i = 0; i < terms.length; i++) { %>
-        <div class = "term container">
-            <input type = "text" name = "terms" placeholder = "term" readonly value = "<%-value=terms[i].term%>">
-            <input type = "text" name = "definitions" placeholder = "definition" readonly value = "<%=terms[i].definition%>">
+    <div id = "content">
+        <header class = "background-primary">
+            <h1 id = "set-title"></h1>
+            <b>Created by <span id = "creator-name"></span></b>
+        </header>
+        <main>
+        <button class = "background-secondary"><i class = "material-icons">play_arrow</i>Play</button>
+        <div id = "terms">
         </div>
-    <% } %>
-    </main>
+        </main>
+    </div>
+    <div id = "loading">
+        <img src = "/static/loading.gif">
+    </div>
+    <script src = "/static/show-set.js"></script>
 </body>
 
 </html>

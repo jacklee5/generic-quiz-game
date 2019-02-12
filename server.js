@@ -1,6 +1,8 @@
 // Required dependencies 
 const express = require('express');
 const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
 const cookieSession = require('cookie-session');
@@ -55,7 +57,7 @@ passport.deserializeUser((id, done) => {
         }
         if(googleData[id]) delete googleData[id];
         done(null, {
-            user_id: results[0].id,
+            user_id: results[0].user_id,
             id: results[0].google_id,
             username: results[0].username,
             photo: results[0].photo
@@ -74,10 +76,10 @@ function isUserAuthenticated(req, res, next) {
 
 const pool  = mysql.createPool({
     connectionLimit : 10,
-    host            : 'den1.mysql1.gear.host',
-    user            : 'genericquizgame',
-    password        : 'Pd234wVLHe~?',
-    database        : 'genericquizgame',
+    host            : 'xefi550t7t6tjn36.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+    user            : 'c775jh0bg1jqkuc8',
+    password        : 'rckafl6fx34b2ewf',
+    database        : 'cza7ebt0ijtm6ttm',
     multipleStatements: true
 });
 
@@ -123,11 +125,11 @@ app.post("/create-set", isUserAuthenticated, (req, res) => {
 
     //set -> set_id, name
     //term -> term_id, set_id, term, definition
-    pool.query("INSERT INTO TermSet (name, creator_id) VALUES (?, ?)", [req.body.setname, req.user.user_id], (err, results, fields) => {
+    pool.query("INSERT INTO termset (name, creator_id) VALUES (?, ?)", [req.body.setname, req.user.user_id], (err, results, fields) => {
         if(err) return console.log(err);
         let insertId = results.insertId;
         termData = termData.map(x => [insertId, x[1], x[2]]);
-        pool.query("INSERT INTO Term (set_id, term, definition) VALUES ?", [termData], (err, results, fields) => {
+        pool.query("INSERT INTO term (set_id, term, definition) VALUES ?", [termData], (err, results, fields) => {
             if(err) return console.log(err);
             res.redirect("/show-set/" + insertId);
         })
@@ -136,17 +138,27 @@ app.post("/create-set", isUserAuthenticated, (req, res) => {
 
 //show set route
 app.get("/show-set/:setid", (req, res) => {
-    pool.query(`
-    SELECT term, definition, TermSet.name, Users.username
-    FROM Term, TermSet, Users
-    WHERE TermSet.set_id = ?
-    AND Term.set_id = TermSet.set_id
-    AND (TermSet.creator_id = users.id OR TermSet.creator_id IS NULL)`, [req.params.setid], (err, results, fields) => {
-        if(err) return console.log(err);
-        if(results.length < 1) return res.send("an error occured but we don't know what");
-        res.render("show-set", {setTitle: results[0].name, creatorName: results[0].username, terms: results});
-    })
+    res.render("show-set");
 })
+
+//game stuff
+const games = {};
+app.get("/join-game", (req, res) => {
+    res.render("join-game");
+});
+app.get("/game", (req, res) => {
+    res.render("game");
+})
+io.on('connection', function (socket) {
+    console.log("a player connected");
+    socket.on("new player", (id) => {
+        console.log("a player joined game " + id);
+    });
+    socket.on("disconnect", () => {
+        console.log("a player disconnected");
+    })
+});
+
 
 //account route
 app.get("/account", isUserAuthenticated, (req, res) => {
@@ -176,11 +188,11 @@ app.post("/create-account", (req, res) => {
 
 app.get("/api/get-set/:setid", (req, res) => {
     pool.query(`
-    SELECT term, definition, TermSet.name, Users.username
-    FROM Term, TermSet, Users
-    WHERE TermSet.set_id = ?
-    AND Term.set_id = TermSet.set_id
-    AND (TermSet.creator_id = users.id OR TermSet.creator_id IS NULL)`, [req.params.setid], (err, results, fields) => {
+    SELECT term, definition, termset.name, users.username
+    FROM term, termset, users
+    WHERE termset.set_id = ?
+    AND term.set_id = termset.set_id
+    AND (termset.creator_id = users.user_id OR termset.creator_id IS NULL)`, [req.params.setid], (err, results, fields) => {
         if (err) return console.log(err);
         if (results.length < 1) return res.send("an error occured but we don't know what");
         res.send(JSON.stringify({
@@ -198,6 +210,6 @@ app.get('/logout', (req, res) => {
 });
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}!`);
+http.listen(PORT, function () {
+    console.log('Server started on port:' + PORT);
 });

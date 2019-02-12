@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <%- include partials/meta.ejs %>
+    <title>Join Game</title>
+</head>
+
+<body>
+    <div>
+        <header class = "background-primary">
+            <h1>Join Game</h1>
+        </header>
+        <main>
+        <div class = "center-text">
+            <form id = "form">
+                <b>Enter Join Code: </b>
+                <input type = "text" style = "margin-left: 8px;" id = "join-code">
+                <br><br>
+                <button class = "background-secondary">Join Game</button>
+            </form>
+        </div>
+        </main>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        document.getElementById("form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            socket.emit("new player", document.getElementById("join-code").value);
+        });
+    </script>
+</body>
+
+</html>

@@ -7,12 +7,15 @@
             /*move this shit to style*/
             main{
                 text-align: center;
+                position: relative;
+                height: calc(100% - 232px);
             }
             #qstn{
                 font-family: "PT-Sans", sans-serif;
-                font-size: 36pt;
-                white-space: nowrap;
+                font-size: 28pt;
                 position: relative;
+                margin: 0;
+                line-height: 200px;
             }
             .question_head{
                 position: relative;
@@ -20,6 +23,7 @@
             .qMan{
                 height: 150px;
                 width: auto;
+                padding-top: 50px;
             }
             #qMan_left{
                 position: relative;
@@ -29,24 +33,27 @@
                 position: relative;
                 float: right;
             }
-
+            body{
+                height: 100vh;
+            }
+            header{
+                height: 200px;
+                padding: 0;
+            }
         </style>
     </head>
     <body>
         <header class = "background-primary question_head">
-            <img id = "qMan_left" class = "qMan" src = static\smallQMan.png> 
-            <img id = "qMan_right" class = "qMan" src = static\smallQMan.png>  
+            <img id = "qMan_left" class = "qMan" src = "\static\smallQMan.png"> 
+            <img id = "qMan_right" class = "qMan" src = "\static\smallQMan.png">  
             <p id = "qstn">Question #0: Example Question Here</p>
             
         </header>
         <main>
-            <div>
-                <button id = "btn1" class = "background-secondary button game-buttons">Answer 1</button>
-                <button id = "btn2" class = "background-secondary button game-buttons">Answer 2</button>
-                <br>
-                <button id = "btn3" class = "background-secondary button game-buttons">Answer 3</button>
-                <button id = "btn4" class = "background-secondary button game-buttons">Answer 4</button>
-            </div>
+            <button id = "btn1" class = "background-secondary button game-buttons">Answer 1</button>
+            <button id = "btn2" class = "background-secondary button game-buttons">Answer 2</button>
+            <button id = "btn3" class = "background-secondary button game-buttons">Answer 3</button>
+            <button id = "btn4" class = "background-secondary button game-buttons">Answer 4</button>
         </main> 
     </body>
 </html>

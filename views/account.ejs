@@ -7,6 +7,22 @@
     </head>
     <body>
         <header class = "background-primary">
+            <nav>
+                <a href = "/">
+                    <h1>Generic Quiz Game</h1>
+                </a>
+                <div class = "links">
+                    <a href = "/create-set"><i class = "material-icons">add</i>Create</a>
+                    <a href = "/join-game"><i class = "material-icons">play_arrow</i>Join Game</a>
+                </div>
+                <div class = "profile" id = "profile-button">
+                    <%=username%><i class = "material-icons">arrow_drop_down</i>
+                </div>
+                <div class = "dropdown" id = "profile-dropdown">
+                    <i class = "material-icons">input</i>
+                    <a href = "/logout">Logout</a>
+                </div>
+            </nav>
             <img class = "pfp" src = "<%=pfp%>">
             <h1><%=username%></h1>
         </header>
@@ -30,6 +46,8 @@
                 </div>
             </div>
         </main>
-
+        <script>
+            
+        </script>
     </body>
 </html> 

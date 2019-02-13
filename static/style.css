@@ -42,6 +42,7 @@ h1, h2, h3, h4, h5, h6{
 header{
     text-align: center;
     padding: 64px;
+    padding-top: 104px;
 }
 header .pfp{
     border-radius: 50%;
@@ -173,7 +174,68 @@ button .material-icons{
 .game-buttons{
     display: inline-block;
     margin: 10px 10px 10px 10px;
-    height: calc(45vh - 148px);
-    width: 45%;
-    font-size: 24pt;
+    height: 50%;
+    width: calc(50% - 40px);
+    font-size: 18pt;
+}
+
+/* nav */
+nav{
+    position: absolute;
+    height: 72px;
+    top:0px;
+    left:0px;
+    width:100%;
+    text-align: left;
+    padding: 0px 80px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 18px;
+}
+nav h1{
+    margin: 0;
+    line-height: 72px;
+    display: inline-block;
+}
+nav .links{
+    display: inline-block;
+    margin-left: 48px;
+    vertical-align: top;
+    line-height: 72px;
+}
+nav .links a{
+    vertical-align: top;
+    margin-right: 16px;
+    cursor: pointer;
+}
+nav .links .material-icons, nav .profile .material-icons{
+    vertical-align: top;
+    line-height: 72px;
+}
+nav .profile{
+    position: absolute;
+    right: 80px;
+    display: inline-block;
+    line-height: 72px;
+    cursor: pointer;
+}
+nav .dropdown{
+    position: absolute;
+    top: 54px;
+    right: 80px;
+    background: white;
+    padding: 8px 16px;
+    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.3);
+    display: none;
+}
+nav a{
+    text-decoration: none;
+    color: black;
+}
+nav .dropdown a{
+    font-size: 14px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 3px;
 }

@@ -111,7 +111,7 @@ app.get('/', (req, res) => {
 
 //create set
 app.get("/create-set", isUserAuthenticated, (req, res) => {
-    res.render("create-set");
+    res.render("create-set", {username: req.user.username});
 });
 app.post("/create-set", isUserAuthenticated, (req, res) => {
     let termData = [];
@@ -138,16 +138,19 @@ app.post("/create-set", isUserAuthenticated, (req, res) => {
 
 //show set route
 app.get("/show-set/:setid", (req, res) => {
-    res.render("show-set");
+    res.render("show-set", {username: req.user.username});
 })
 
 //game stuff
+const getId = () => Math.random().toString(36).substr(2, 5);
 const games = {};
 app.get("/join-game", (req, res) => {
-    res.render("join-game");
+    res.render("join-game", {username: req.user.username});
 });
-app.get("/game", (req, res) => {
+app.get("/play/:setid", (req, res) => {
     res.render("game");
+    const id = getId();
+    games[id] = {setId: req.params.setid, players: [req.user.user_id]};
 })
 io.on('connection', function (socket) {
     console.log("a player connected");

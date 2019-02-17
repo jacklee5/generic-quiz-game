@@ -19,6 +19,8 @@
             }
             .question_head{
                 position: relative;
+                height: 200px;
+                padding: 0;
             }
             .qMan{
                 height: 150px;
@@ -36,26 +38,108 @@
             body{
                 height: 100vh;
             }
-            header{
-                height: 200px;
-                padding: 0;
+
+            .page{
+                display: none;
+                width: 100%;
+                height: 100vh;
+            }
+            .start-page{
+                display: block;
+            }
+
+            #lobby header{
+                padding: 32px 0px;
+            }
+            #lobby header h1{
+                font-size: 56px;
+                margin: 0
+            }
+            #lobby header p{
+                margin: 0;
+            }
+            #player-count{
+                font-weight: 700;
+                font-size: 24px;
+                text-transform: uppercase;
+            }
+
+            .player{
+                width: calc(33% - 64px);
+                margin: 32px;
+                display: inline-block;
+                font-weight: 700;
+                font-size: 18px;
             }
         </style>
     </head>
     <body>
-        <header class = "background-primary question_head">
-            <img id = "qMan_left" class = "qMan" src = "\static\smallQMan.png"> 
-            <img id = "qMan_right" class = "qMan" src = "\static\smallQMan.png">  
-            <p id = "qstn">Question #0: Example Question Here</p>
-            
-        </header>
-        <main>
-            <button id = "btn1" class = "background-secondary button game-buttons" onclick = "changeQuestionText('gay1')">Answer 1</button>
-            <button id = "btn2" class = "background-secondary button game-buttons" onclick = "changeQuestionText('gay2')">Answer 2</button>
-            <br>
-            <button id = "btn3" class = "background-secondary button game-buttons" onclick = "changeQuestionText('gay3')">Answer 3</button>
-            <button id = "btn4" class = "background-secondary button game-buttons" onclick = "changeQuestionText('gay4')">Answer 4</button>
-        </main>
+        <div class = "page" id = "join">
+            <header class = "background-primary">
+                <nav>
+                    <a href = "/">
+                        <h1>Generic Quiz Game</h1>
+                    </a>
+                    <div class = "links">
+                        <a href = "/create-set"><i class = "material-icons">add</i>Create</a>
+                        <a href = "/play"><i class = "material-icons">play_arrow</i>Join Game</a>
+                    </div>
+                    <div class = "profile" id = "profile-button">
+                        <span id = "username"><%=username%></span><i class = "material-icons">arrow_drop_down</i>
+                    </div>
+                    <div class = "dropdown" id = "profile-dropdown">
+                        
+                        <a href = "/logout"><i class = "material-icons">input</i>Logout</a>
+                    </div>
+                </nav>
+                <h1>Join Game</h1>
+            </header>
+            <main>
+            <div class = "center-text">
+                <form id = "join-form">
+                    <p class = "error" id = "join-error">Error</p>
+                    <b>Enter Join Code: </b>
+                    <input type = "text" style = "margin-left: 8px;" id = "join-code">
+                    <br><br>
+                    <button class = "background-secondary">Join Game</button>
+                </form>
+            </div>
+            </main>
+        </div>
+        <div class = "page" id = "lobby">
+            <header class = "background-primary">
+                <h1 id = "game-id"></h1>
+                <p>Give your friends this code to start playing</p>
+            </header>
+            <section class = "background-ternary" id = "info">
+                <button style = "display: inline-block; background: white; margin: 32px;">
+                    <span id = "player-count">
+                        0
+                    </span>
+                    <span style = "font-size: 12px;">players</span>
+                </button>
+                <button class = "float-right background-secondary" style = "margin: 32px;" id = "start-game-button">
+                    Start Game!
+                </button>
+            </section>
+            <section id = "player-list"></section>
+        </div>
+        <div class = "page" id = "game">
+            <header class = "background-primary question_head">
+                <img id = "qMan_left" class = "qMan" src = "\static\smallQMan.png"> 
+                <img id = "qMan_right" class = "qMan" src = "\static\smallQMan.png">  
+                <p id = "qstn">Question #0: Example Question Here</p>
+                
+            </header>
+            <main>
+                <button id = "btn1" class = "background-secondary button game-buttons" onclick = "changeQuestionText('gay1')">Answer 1</button>
+                <button id = "btn2" class = "background-secondary button game-buttons" onclick = "changeQuestionText('gay2')">Answer 2</button>
+                <br>
+                <button id = "btn3" class = "background-secondary button game-buttons" onclick = "changeQuestionText('gay3')">Answer 3</button>
+                <button id = "btn4" class = "background-secondary button game-buttons" onclick = "changeQuestionText('gay4')">Answer 4</button>
+            </main>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
         <script  src = "\static\game.js"></script>  
     </body>
 </html>

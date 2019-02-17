@@ -1,5 +1,4 @@
 window.onload = function() {
-    console.log(document.getElementById("profile-button"))
     const getDropdownState = () => {
         return window.getComputedStyle(document.getElementById("profile-dropdown"), null).display;
     }
@@ -9,6 +8,9 @@ window.onload = function() {
             document.getElementById("profile-dropdown").style.display = "block"
         };
     });
+    document.getElementById("profile-dropdown").addEventListener("click", (e) => {
+        e.stopPropagation();
+    })
     document.body.addEventListener("click", (e) => {
         if(getDropdownState() === "block"){
             e.preventDefault();

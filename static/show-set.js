@@ -40,6 +40,13 @@ const loadTerms = () => {
             for(let i = 0; i < terms.length; i++){
                 addTerm(terms[i].term, terms[i].definition);
             }
+
+            //also set the play button
+            document.getElementById("play-button").addEventListener("click", () => {
+                window.location = "/play/" + getSetId();
+            })
+
+            //show everything
             document.getElementById("loading").style.display = "none";
             document.getElementById("content").style.display = "block";
         }

@@ -8,7 +8,7 @@
             main{
                 text-align: center;
                 position: relative;
-                height: calc(100% - 232px);
+                height: calc(100% - 252px);
             }
             #qstn{
                 font-family: "PT-Sans", sans-serif;
@@ -71,6 +71,37 @@
                 font-weight: 700;
                 font-size: 18px;
             }
+            #results header .material-icons{
+                font-size: 34px;
+                vertical-align: top;
+                margin-right:8px;
+            }
+            #results header{
+                padding-top: 64px;
+            }
+            #results header.correct{
+                background: #4CAF50;
+            }
+            #results header.incorrect{
+                background: #F44336
+            }
+            #results header h1{
+                display: inline-block;
+            }
+            #results header p{
+                margin: 0;
+            }
+            #results table{
+                width: 80%;
+                box-shadow: 1px 1px 15px rgba(0,0,0,0.15), 1px 3px 5px rgba(0, 0, 0, 0.3);
+            }
+            #results table tr *:nth-child(1){
+                width: 48px;
+            }
+            #results table th, #results table td{
+                text-align: left;
+                padding: 16px;
+            }
         </style>
     </head>
     <body>
@@ -124,7 +155,13 @@
             </section>
             <section id = "player-list"></section>
         </div>
+        <div class = "page" id = "loading">
+            <img src = "/static/loading.gif">
+        </div>
         <div class = "page" id = "game">
+            <div style = "background:#E0E0E0;height:20px;">
+                <div id = "timer" class = "background-ternary" style = "width: 100%;height:100%;"></div>
+            </div>
             <header class = "background-primary question_head">
                 <img id = "qMan_left" class = "qMan" src = "\static\smallQMan.png"> 
                 <img id = "qMan_right" class = "qMan" src = "\static\smallQMan.png">  
@@ -132,11 +169,26 @@
                 
             </header>
             <main>
-                <button id = "btn1" class = "background-secondary button game-buttons" onclick = "changeQuestionText('gay1')">Answer 1</button>
-                <button id = "btn2" class = "background-secondary button game-buttons" onclick = "changeQuestionText('gay2')">Answer 2</button>
+                <button id = "btn1" class = "background-secondary button game-buttons">Answer 1</button>
+                <button id = "btn2" class = "background-secondary button game-buttons">Answer 2</button>
+                <button id = "btn3" class = "background-secondary button game-buttons">Answer 3</button>
+                <button id = "btn4" class = "background-secondary button game-buttons">Answer 4</button>
+            </main>
+        </div>
+        <div class = "page" id = "results">
+            <div style = "background:#E0E0E0;height:20px;">
+                <div id = "results-timer" class = "background-ternary" style = "width: 100%;height:100%;"></div>
+            </div>
+            <header class = "incorrect">
+                <i class = "material-icons">check</i><h1>Correct!</h1>
+                <p>(+<span id = "points-gained"></span> points)</p>
                 <br>
-                <button id = "btn3" class = "background-secondary button game-buttons" onclick = "changeQuestionText('gay3')">Answer 3</button>
-                <button id = "btn4" class = "background-secondary button game-buttons" onclick = "changeQuestionText('gay4')">Answer 4</button>
+                <p id = "feedback-text">You correctly said that the answer was:</p>
+                <p><b id = "answer-text">scary person</b></p>
+            </header>
+            <main style = "height: 0">
+                <h2>Current Standings</h2>
+                <table class = "center-horizontal" id = "results-table"></table>
             </main>
         </div>
         <script src="/socket.io/socket.io.js"></script>

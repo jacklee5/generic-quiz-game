@@ -19,6 +19,11 @@ body{
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.center-horizontal{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
 .float-right{
     float: right;
 }
@@ -90,7 +95,6 @@ button{
     transition: .3s all;
     font-weight: 700;
     line-height: 24px;
-    white-space: nowrap;
 }
 button:active{
     box-shadow: 1px 3px 2px rgba(0, 0, 0, 0.1);
@@ -185,7 +189,9 @@ button .material-icons{
     margin: 10px 10px 10px 10px;
     height: 50%;
     width: calc(50% - 40px);
-    font-size: 18pt;
+    font-size: 16pt;
+    font-weight: 400;
+    text-transform: none;
 }
 
 /* nav */

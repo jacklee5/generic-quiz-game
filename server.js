@@ -142,74 +142,13 @@ app.get("/show-set/:setid", (req, res) => {
 })
 
 //game stuff
-const getId = () => Math.random().toString(36).substr(2, 5);
-const games = {};
-const playerRooms = {};
-const usernames = {};
-app.get("/play", (req, res) => {
+app.get("/play", isUserAuthenticated, (req, res) => {
     res.render("game", {username: req.user.username});
 });
-app.get("/play/:setid", (req, res) => {
+app.get("/play/:setid", isUserAuthenticated, (req, res) => {
     res.render("game", {username: req.user.username});
-})
-io.on('connection', function (socket) {
-    console.log("a player connected");
-    socket.on("new game", (setId, username) => {
-        const id = getId();
-
-        games[id] = {setId: setId, players: [socket.id], leader: socket.id};
-        playerRooms[socket.id] = id;
-        usernames[socket.id] = username;
-
-        socket.emit("gameId", id);
-        socket.join(id);
-
-        socket.emit("add player", socket.id, username);
-
-        //start loading set
-
-    })
-    socket.on("new player", (id, username) => {
-        console.log("a player joined game " + id);
-        if(!games[id]) return socket.emit("join err", "Incorrect code!")
-
-        const players = games[id].players;
-
-        players.push(socket.id);
-        playerRooms[socket.id] = id;
-        usernames[socket.id] = username;
-
-        socket.join(id);
-        socket.to(id).emit("add player", socket.id, username);
-        for(let i = 0; i < players.length; i++){
-            socket.emit("add player", players[i], usernames[players[i]]);
-        }
-        socket.emit("join success");
-    });
-    socket.on("start game", () => {
-        console.log("Starting game " + playerRooms[socket.id]);
-    })
-    socket.on("disconnect", () => {
-        console.log("a player disconnected");
-        const game = playerRooms[socket.id];
-        if(!games[game]) return;
-
-        if(games[game].leader = socket.id){
-            socket.to(game).emit("join err", "Leader left!");
-            return delete games[game];
-        }
-
-        io.in(game).emit("remove player", socket.id);
-        const players = games[game].players;
-        players.splice(players.indexOf(socket.id), 1);
-        delete playerRooms[socket.id];
-        delete usernames[socket.id];
-
-        if(games[game] && games[game].players.length == 0){
-            delete games[game];
-        }
-    })
 });
+require("./game-server")(io, pool);
 
 
 app.get("/game", (req, res) => {

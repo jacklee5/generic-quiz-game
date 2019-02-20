@@ -142,25 +142,13 @@ app.get("/show-set/:setid", (req, res) => {
 })
 
 //game stuff
-const getId = () => Math.random().toString(36).substr(2, 5);
-const games = {};
-app.get("/join-game", (req, res) => {
-    res.render("join-game", {username: req.user.username});
+app.get("/play", isUserAuthenticated, (req, res) => {
+    res.render("game", {username: req.user.username});
 });
-app.get("/play/:setid", (req, res) => {
-    res.render("game");
-    const id = getId();
-    games[id] = {setId: req.params.setid, players: [req.user.user_id]};
-})
-io.on('connection', function (socket) {
-    console.log("a player connected");
-    socket.on("new player", (id) => {
-        console.log("a player joined game " + id);
-    });
-    socket.on("disconnect", () => {
-        console.log("a player disconnected");
-    })
+app.get("/play/:setid", isUserAuthenticated, (req, res) => {
+    res.render("game", {username: req.user.username});
 });
+require("./game-server")(io, pool);
 
 
 app.get("/game", (req, res) => {

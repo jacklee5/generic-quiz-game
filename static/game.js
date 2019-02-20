@@ -1,5 +1,7 @@
 const answer = 'gay2';
 
+
+
 const changeQuestionText = (text) => {
     var elem = document.getElementById("qstn");
     if (text === answer){
@@ -8,3 +10,4 @@ const changeQuestionText = (text) => {
         elem.textContent = 'No!';
     }
 }
+

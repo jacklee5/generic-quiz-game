@@ -51,7 +51,7 @@ const loadTerms = () => {
             document.getElementById("content").style.display = "block";
         }
     };
-    xhttp.open("GET", "/api/get-set/" + getSetId(), true);
+    xhttp.open("GET", "/api/set/" + getSetId(), true);
     xhttp.send();
 }
 

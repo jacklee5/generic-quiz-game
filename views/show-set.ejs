@@ -53,9 +53,7 @@
                 <div class = "profile" id = "profile-button">
                     <%=username%><i class = "material-icons">arrow_drop_down</i>
                 </div>
-                <div class = "dropdown" id = "profile-dropdown">
-                    <a href = "/logout"><i class = "material-icons">input</i>Logout</a>
-                </div>
+                <%- include partials/dropdown.ejs %>
             </nav>
             <h1 id = "set-title"></h1>
             <b>Created by <span id = "creator-name"></span></b>

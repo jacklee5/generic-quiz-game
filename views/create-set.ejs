@@ -39,43 +39,46 @@
 </head>
 
 <body>
-    <header class = "background-primary">
-        <nav>
-            <a href = "/">
-                <h1>Generic Quiz Game</h1>
-            </a>
-            <div class = "links">
-                <a href = "/create-set"><i class = "material-icons">add</i>Create</a>
-                <a href = "/play"><i class = "material-icons">play_arrow</i>Join Game</a>
-            </div>
-            <div class = "profile" id = "profile-button">
-                <%=username%><i class = "material-icons">arrow_drop_down</i>
-            </div>
-            <div class = "dropdown" id = "profile-dropdown">
-                <a href = "/logout"><i class = "material-icons">input</i>Logout</a>
-            </div>
-        </nav>
-        <h1>Create Set</h1>
-    </header>
-    <main>
-        <form action = "/create-set" method = "POST">
-            <label>Set Name: </label>
-            <input maxlength = "30" type = "text" name = "setname" required>
-
-            <div id = "terms">
-                <div class = "term container">
-                    <input type = "text" name = "terms" placeholder = "term" required>
-                    <input type = "text" name = "definitions" placeholder = "definition" required>
+    <div id = "content" style = "display:block;animation:none;">
+        <header class = "background-primary">
+            <nav>
+                <a href = "/">
+                    <h1>Generic Quiz Game</h1>
+                </a>
+                <div class = "links">
+                    <a href = "/create-set"><i class = "material-icons">add</i>Create</a>
+                    <a href = "/play"><i class = "material-icons">play_arrow</i>Join Game</a>
                 </div>
-            </div>
+                <div class = "profile" id = "profile-button">
+                    <%=username%><i class = "material-icons">arrow_drop_down</i>
+                </div>
+                <%- include partials/dropdown.ejs %>
+            </nav>
+            <h1>Create Set</h1>
+        </header>
+        <main>
+            <form action = "/create-set" method = "POST" id = "form">
+                <label>Set Name: </label>
+                <input maxlength = "30" type = "text" name = "setname" required>
 
-            <div id = "add-term" class = "container" style = "font-size: 14px">
-                <b><i class = "material-icons" style = "vertical-align: bottom;font-size:18px;margin-right:4px;">add</i>Add Term</b>
-            </div>
+                <div id = "terms">
+                    <div class = "term container">
+                        <input type = "text" name = "terms" placeholder = "term" required>
+                        <input type = "text" name = "definitions" placeholder = "definition" required>
+                    </div>
+                </div>
 
-            <button class = "background-secondary">Create Set</button>
-        </form>
-    </main>
+                <div id = "add-term" class = "container" style = "font-size: 14px">
+                    <b><i class = "material-icons" style = "vertical-align: bottom;font-size:18px;margin-right:4px;">add</i>Add Term</b>
+                </div>
+
+                <button class = "background-secondary">Create Set</button>
+            </form>
+        </main>
+    </div>
+    <div id = "loading" style = "display:none">
+        <img src = "/static/loading.gif">
+    </div>
     <script src = "/static/create-set.js"></script>
 </body>
 

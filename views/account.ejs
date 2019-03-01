@@ -4,49 +4,219 @@
         <title>Account | Generic Quiz Game</title>
         <meta charset = "utf-8">
         <%- include partials/meta.ejs %>
+        <style>
+            #friend-popup{
+                padding: 32px;
+                text-align: center;
+                animation:fadeIn .3s forwards;
+            }
+        </style>
     </head>
     <body>
-        <header class = "background-primary">
-            <nav>
-                <a href = "/">
-                    <h1>Generic Quiz Game</h1>
-                </a>
-                <div class = "links">
-                    <a href = "/create-set"><i class = "material-icons">add</i>Create</a>
-                    <a href = "/play"><i class = "material-icons">play_arrow</i>Join Game</a>
-                </div>
-                <div class = "profile" id = "profile-button">
-                    <%=username%><i class = "material-icons">arrow_drop_down</i>
-                </div>
-                <div class = "dropdown" id = "profile-dropdown">
-                    <a href = "/logout"><i class = "material-icons">input</i>Logout</a>
-                </div>
-            </nav>
-            <img class = "pfp" src = "<%=pfp%>">
-            <h1><%=username%></h1>
-        </header>
+        <div id = "loading">
+            <img src = "/static/loading.gif">
+        </div>
+        <div id = "content">
+            <header class = "background-primary">
+                <nav>
+                    <a href = "/">
+                        <h1>Generic Quiz Game</h1>
+                    </a>
+                    <div class = "links">
+                        <a href = "/create-set"><i class = "material-icons">add</i>Create</a>
+                        <a href = "/play"><i class = "material-icons">play_arrow</i>Join Game</a>
+                    </div>
+                    <div class = "profile" id = "profile-button">
+                        <%=username%><i class = "material-icons">arrow_drop_down</i>
+                    </div>
+                    <%- include partials/dropdown.ejs %>
+                </nav>
+                <img class = "pfp" src = "<%=pfp%>" id = "pfp">
+                <h1 id = "username"><%=username%></h1>
+            </header>
 
-        <main>
-            <div class = "list-container">
-                <div class = "sets list">
-                    <h1>My Sets</h1>
-                    <a href = "/create-set" class = "background-secondary icon-button"><i class = "material-icons">add</i></a>
-                    <% for(let i = 0; i < sets.length; i++) { %>
-                        <a href = "/show-set/<%-sets[i].set_id%>" class = "set">
-                            <div class = "container">
-                                <h2><%=sets[i].name%></h2>
-                                <p>Created 2 days ago</p>
-                            </div>
-                        </a>
-                    <% } %>
+            <main>
+                <div class = "list-container">
+                    <div class = "sets list">
+                        <h1><span class = "my">My </span>Sets</h1>
+                        <a href = "/create-set" class = "background-secondary icon-button my"><i class = "material-icons">add</i></a>
+                        <div id = "sets-container">
+                        
+                        </div>
+                    </div>
+                    <div class = "friends list">
+                        <h1><span class = "my">My </span>Friends</h1>
+                        <a class = "background-secondary icon-button my" id = "add-friend-button"><i class = "material-icons">add</i></a>
+                    </div>
                 </div>
-                <div class = "friends list">
-                    <h1>My Friends</h1>
-                </div>
-            </div>
-        </main>
+            </main>
+        </div>
+        <div id = "delete-popup" class = "popup">
+            <a id = "delete-button"><i class = "material-icons">delete</i>Delete</a>
+        </div>
+        <div id = "friend-popup" class = "popup">
+            <h1>Add Friend</h1>
+            <p>Share this link with your friends: </p>
+            <input type = "text" readonly value = "localhost:8000/friend/1203" onclick = "this.select()" id = "friend-url" style = "width:100%;text-align:center">
+        </div>
         <script>
+            //show the correct user
+            //get user id from url
+            const getUserId = () => {
+                const params = window.location.pathname.split("/");
+                return params[params.length - 1];
+            }
+            const userId = getUserId();
+            let isSelf = true;
+            let loaded = 0;
+            if(userId !== "account"){
+                isSelf = false;
+
+                //get user data
+                (() => {
+                    let xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState === 4 && this.status === 200) {
+                            const data = JSON.parse(this.responseText);
+                            document.getElementById("username").textContent = data.username;
+                            document.getElementById("pfp").src = data.photo;
+
+                            //hide anything that says "my"
+                            const myEls = document.getElementsByClassName("my");
+                            for(let i = 0; i < myEls.length; i++){
+                                myEls[i].style.display = "none";
+                            }
+
+                            loaded++;
+                            if(loaded === 2){
+                                document.getElementById("loading").style.display = "none";
+                                document.getElementById("content").style.display = "block";
+                            }
+                        }else if(this.readyState === 4 && this.status === 404){
+                            window.location.href = "/404";
+                        }
+                    };
+                    xhttp.open("GET", "/api/user/" + userId, true);
+                    xhttp.send();
+                })();
+            }
             
+            //get sets
+            (() => {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function(){
+                    if(this.readyState === 4 && this.status === 200){
+                        const sets = JSON.parse(this.responseText);
+
+                        for(let i = 0; i < sets.length; i++) {
+                            const id = sets[i].set_id;
+
+                            const parent = document.createElement("a");
+                            parent.href = "/show-set/" + id;
+                            parent.className = "set";
+                            parent.id = "set" + id;
+
+                            const container = document.createElement("container");
+                            container.className = "container";
+                            parent.appendChild(container);
+
+                            const header = document.createElement("h2");
+                            header.textContent = sets[i].name;
+
+                            const p = document.createElement("p");
+                            if(sets[i].set_creation_date === 0 || sets[i].set_creation_date == null) p.textContent = "Created at the beginning of time";
+                            else p.textContent = `Created ${sets[i].timeSinceCreated}`;
+                            
+                            const icon = document.createElement("i");
+                            icon.className = "material-icons more-options";
+                            icon.dataset.setid = id;
+                            icon.textContent = "more_horiz";
+
+                            container.appendChild(header);
+                            container.appendChild(p);
+                            container.appendChild(icon);
+
+                            document.getElementById("sets-container").appendChild(parent);
+                        }
+
+                        //bind listeners on  more buttons
+                        const moreButtons = document.querySelectorAll(".set .more-options");
+                        for(let i = 0; i < moreButtons.length; i++){
+                            moreButtons[i].addEventListener("click", (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                
+                                const popup = document.getElementById("delete-popup");
+                                const setid = moreButtons[i].dataset.setid
+
+                                //hide if already showing
+                                if(window.getComputedStyle(popup, null).display === "block" && curSet === setid) return popup.style.display = "none";
+
+
+                                popup.style.display = "block";
+                                popup.style.position = "absolute";
+                                popup.style.left = (e.clientX + window.scrollX) + "px";
+                                popup.style.top = (e.clientY + window.scrollY) + "px";
+
+                                curSet = setid;
+                            });
+                        }
+                        loaded++;
+                        if(isSelf || !isSelf && loaded === 2){
+                            document.getElementById("loading").style.display = "none";
+                            document.getElementById("content").style.display = "block";
+                        }
+                    }
+                }
+                //if the user is viewing a different account
+                xhttp.open("GET", "/api/sets/" + (userId === "account" ? "" : userId), true);
+                xhttp.send();
+            })();
+            //get friend code
+            (() => {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("friend-url").value = "localhost:8000/friend/" + this.responseText;
+                    }
+                };
+                xhttp.open("GET", "/api/friend-code", true);
+                xhttp.send();
+            })();
+
+            //context for popup
+            let curSet;
+
+            //hide popup if anything else is clicked
+            document.body.addEventListener("click", () => {
+                document.getElementById("delete-popup").style.display = "none";
+                document.getElementById("friend-popup").style.display = "none";
+            })
+
+            //delete button
+            document.getElementById("delete-button").addEventListener("click", () => {
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("DELETE", "/api/set/" + curSet, true);
+                xhttp.send();
+
+                document.getElementById("set" + curSet).style.display = "none";
+            })
+
+            //add friend button
+            document.getElementById("add-friend-button").addEventListener("click", (e) => {
+                e.stopPropagation();
+
+                const popup = document.getElementById("friend-popup");
+                popup.style.display = "block";
+                popup.style.position = "fixed";
+                popup.style.top = "50%";
+                popup.style.left = "50%";
+                popup.style.transform = "translate(-50%, -50%)";
+            });
+
+            document.getElementById("friend-popup").addEventListener("click", (e) => {
+                e.stopPropagation();
+            })
         </script>
     </body>
 </html> 

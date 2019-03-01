@@ -93,7 +93,9 @@
             }
             #results table{
                 width: 80%;
-                box-shadow: 1px 1px 15px rgba(0,0,0,0.15), 1px 3px 5px rgba(0, 0, 0, 0.3);
+                box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+                0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+                0px 1px 10px 0px rgba(0, 0, 0, 0.12);
             }
             #results table tr *:nth-child(1){
                 width: 48px;
@@ -118,10 +120,7 @@
                     <div class = "profile" id = "profile-button">
                         <span id = "username"><%=username%></span><i class = "material-icons">arrow_drop_down</i>
                     </div>
-                    <div class = "dropdown" id = "profile-dropdown">
-                        
-                        <a href = "/logout"><i class = "material-icons">input</i>Logout</a>
-                    </div>
+                    <%- include partials/dropdown.ejs %>
                 </nav>
                 <h1>Join Game</h1>
             </header>

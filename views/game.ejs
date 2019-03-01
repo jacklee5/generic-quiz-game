@@ -102,6 +102,10 @@
                 text-align: left;
                 padding: 16px;
             }
+            table{
+                text-align: center;
+            }
+            #gameover
         </style>
     </head>
     <body>
@@ -190,6 +194,33 @@
                 <h2>Current Standings</h2>
                 <table class = "center-horizontal" id = "results-table"></table>
             </main>
+        </div>
+        <div class = "page start-page" id = "gameover">
+            <h1 id="gameover">GAME IS OVER!!!!</h1>
+
+            <table>
+                <tr>
+                    <th>Place</th>
+                    <th>Player</th>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <th>P1</th>    
+                </tr>
+                <tr>
+                    <th>2</th>
+                    <th>P2</th>    
+                </tr>
+                <tr>
+                    <th>3</th>
+                    <th>P3</th>    
+                </tr>
+            </table>
+
+            <button>Play set again</button>
+            <br>
+            <button href="/account" class = "button">Return to home</button>
+            
         </div>
         <script src="/socket.io/socket.io.js"></script>
         <script  src = "\static\game.js"></script>  

@@ -1,3 +1,4 @@
+/*
 const answer = 'gay2';
 
 
@@ -193,3 +194,4 @@ socket.on("results", (data) => {
 socket.on("game over", () => {
     alert("no more questions");
 })
+*/

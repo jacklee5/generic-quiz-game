@@ -75,7 +75,7 @@ function isUserAuthenticated(req, res, next) {
 }
 
 const pool  = mysql.createPool({
-    connectionLimit : 10,
+    connectionLimit : 2,
     host            : 'xefi550t7t6tjn36.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
     user            : 'c775jh0bg1jqkuc8',
     password        : 'rckafl6fx34b2ewf',

@@ -1,4 +1,7 @@
+/*
 const answer = 'gay2';
+
+
 
 const changeQuestionText = (text) => {
     var elem = document.getElementById("qstn");
@@ -191,3 +194,4 @@ socket.on("results", (data) => {
 socket.on("game over", () => {
     alert("no more questions");
 })
+*/

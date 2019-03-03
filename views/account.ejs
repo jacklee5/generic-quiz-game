@@ -40,13 +40,12 @@
                     <div class = "sets list">
                         <h1><span class = "my">My </span>Sets</h1>
                         <a href = "/create-set" class = "background-secondary icon-button my"><i class = "material-icons">add</i></a>
-                        <div id = "sets-container">
-                        
-                        </div>
+                        <div id = "sets-container"></div>
                     </div>
                     <div class = "friends list">
                         <h1><span class = "my">My </span>Friends</h1>
                         <a class = "background-secondary icon-button my" id = "add-friend-button"><i class = "material-icons">add</i></a>
+                        <div id = "friends-container"></div>
                     </div>
                 </div>
             </main>
@@ -67,13 +66,22 @@
                 return params[params.length - 1];
             }
             const userId = getUserId();
+            const stopLoading = () => {
+                document.getElementById("loading").style.display = "none";
+                document.getElementById("content").style.display = "block";
+            }
+            //how many things have to load before show
+            let LOADS = 3;
             let isSelf = true;
             let loaded = 0;
+
+            //if the account you're viewing isn't the logged in user
             if(userId !== "account"){
                 isSelf = false;
+                LOADS++;
 
                 //get user data
-                (() => {
+                (async () => {
                     let xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                         if (this.readyState === 4 && this.status === 200) {
@@ -88,9 +96,9 @@
                             }
 
                             loaded++;
-                            if(loaded === 2){
-                                document.getElementById("loading").style.display = "none";
-                                document.getElementById("content").style.display = "block";
+                            console.log("loaded user data");
+                            if(loaded === LOADS){
+                                stopLoading();
                             }
                         }else if(this.readyState === 4 && this.status === 404){
                             window.location.href = "/404";
@@ -102,7 +110,7 @@
             }
             
             //get sets
-            (() => {
+            (async () => {
                 const xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function(){
                     if(this.readyState === 4 && this.status === 200){
@@ -162,9 +170,9 @@
                             });
                         }
                         loaded++;
-                        if(isSelf || !isSelf && loaded === 2){
-                            document.getElementById("loading").style.display = "none";
-                            document.getElementById("content").style.display = "block";
+                        console.log("loaded sets");
+                        if(loaded === LOADS){
+                            stopLoading();
                         }
                     }
                 }
@@ -173,16 +181,43 @@
                 xhttp.send();
             })();
             //get friend code
-            (() => {
+            (async () => {
                 const xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         document.getElementById("friend-url").value = "localhost:8000/friend/" + this.responseText;
+                        loaded++;
+                        console.log("loaded friend code")
+                        if(loaded === LOADS){
+                            stopLoading();
+                        }
                     }
                 };
                 xhttp.open("GET", "/api/friend-code", true);
                 xhttp.send();
             })();
+            //get friends
+            (async () => {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        const data = JSON.parse(this.responseText);
+                        for(let i = 0; i < data.length; i++){
+                            document.getElementById("friends-container").innerHTML += 
+                            `<a href = "/account/${data[i].user_id}">
+                                <div class = "friend">
+                                    <img class = "pfp" src = "${data[i].photo}" id = "pfp"> <h1>${data[i].username}</h1>
+                                </div>
+                            </a>`
+                        }
+                        loaded++;
+                        console.log("loaded friends");
+                        if(loaded === LOADS) stopLoading();
+                    }
+                };
+                xhttp.open("GET", "/api/friends/" + (userId === "account" ? "" : userId), true);
+                xhttp.send();
+            })()
 
             //context for popup
             let curSet;

@@ -147,6 +147,31 @@ button .material-icons{
     margin-top: 4px;
     cursor: pointer;
 }
+/* friend */
+#friends-container a{
+    text-decoration: none;
+}
+.friend{
+    padding: 32px;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    background: white;
+    margin: 16px 0px;
+    color: black;
+    display: block;
+    text-decoration: none;
+    position: relative;
+}
+.friend img{
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+.friend h1{
+    display: inline-block;
+    vertical-align: middle;
+}
 /* set preview */
 .set{
     padding: 32px;

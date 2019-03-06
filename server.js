@@ -42,13 +42,9 @@ passport.use(new GoogleStrategy({
         pool.query("SELECT * FROM users WHERE google_id = ?", [id], (err, results, fields) => {
             if(err) return console.log(err);
             if(!results[0]){
-                done(null, {
-                    id: googleData[id].id,
-                    photo: googleData[id].photos[0].value
-                });
+                done(null, profile);
                 return;
             }
-            if(googleData[id]) delete googleData[id];
             const data = {
                 user_id: results[0].user_id,
                 id: results[0].google_id,

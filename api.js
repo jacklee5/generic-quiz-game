@@ -27,12 +27,21 @@ module.exports = (isUserAuthenticated, pool) => {
 
     //get the sets of the current user
     app.get("/sets", isUserAuthenticated, (req, res) => {
-        pool.query("SELECT set_id, name, set_creation_date FROM termset WHERE creator_id = ?", [req.user.user_id], (err, results, fields) => {
+        pool.query("SELECT set_id, name, set_creation_date FROM termset WHERE creator_id = ? ORDER BY set_creation_date DESC", [req.user.user_id], (err, results, fields) => {
             if(err) return console.log(err);
             results = results.map(x => Object.assign({timeSinceCreated: moment(x.set_creation_date).fromNow()}, x));
             res.send(results);
         })
     });
+    //get sets of other users
+    app.get("/sets/:userid", (req, res) => {
+        pool.query("SELECT set_id, name, set_creation_date FROM termset WHERE creator_id = ? ORDER BY set_creation_date DESC", [req.params.userid], (err, results, fields) => {
+            if(err) return console.log(err);
+            results = results.map(x => Object.assign({timeSinceCreated: moment(x.set_creation_date).fromNow()}, x));
+            res.send(results);
+        })
+    });
+    
     //get the friends of the current user
     app.get("/friends", isUserAuthenticated, (req, res) => {
         pool.query("SELECT user_id, photo, username FROM users, friends WHERE users.user_id = friends.friender AND friends.friendee = ?", [req.user.user_id], (err, results) => {
@@ -47,14 +56,6 @@ module.exports = (isUserAuthenticated, pool) => {
             res.send(results);
         })
     })
-    //get sets of other users
-    app.get("/sets/:userid", (req, res) => {
-        pool.query("SELECT set_id, name, set_creation_date FROM termset WHERE creator_id = ?", [req.params.userid], (err, results, fields) => {
-            if(err) return console.log(err);
-            results = results.map(x => Object.assign({timeSinceCreated: moment(x.set_creation_date).fromNow()}, x));
-            res.send(results);
-        })
-    });
 
     //gets data (username and photo) of other users
     app.get("/user/:userid", (req, res) => {

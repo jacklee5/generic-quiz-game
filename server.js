@@ -11,7 +11,7 @@ const mysql = require('mysql');
 const bodyParser = require("body-parser");
 
 //dev or prod
-const PROD = false;
+const PROD = true;
 
 // cookieSession config
 app.use(cookieSession({

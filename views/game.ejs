@@ -104,6 +104,11 @@
                 text-align: left;
                 padding: 16px;
             }
+            #gameover_buttons{
+                text-align: center;
+                position: absolute;
+                bottom: 50px;
+            }
             table{
                 text-align: center;
             }
@@ -178,10 +183,10 @@
             </main>
         </div>
         <div class = "page" id = "results">
-            <div style = "background:#E0E0E0;height:20px;">
+            <div id = "timer-bar" style = "background:#E0E0E0;height:20px;">
                 <div id = "results-timer" class = "background-ternary" style = "width: 100%;height:100%;"></div>
             </div>
-            <header class = "incorrect">
+            <header id = "results-banner" class = "incorrect">
                 <i class = "material-icons">check</i><h1>Correct!</h1>
                 <p>(+<span id = "points-gained"></span> points)</p>
                 <br>
@@ -192,33 +197,10 @@
                 <h2>Current Standings</h2>
                 <table class = "center-horizontal" id = "results-table"></table>
             </main>
-        </div>
-        <div class = "page start-page" id = "gameover">
-            <h1 id="gameover">GAME IS OVER!!!!</h1>
-
-            <table>
-                <tr>
-                    <th>Place</th>
-                    <th>Player</th>
-                </tr>
-                <tr>
-                    <th>1</th>
-                    <th>P1</th>    
-                </tr>
-                <tr>
-                    <th>2</th>
-                    <th>P2</th>    
-                </tr>
-                <tr>
-                    <th>3</th>
-                    <th>P3</th>    
-                </tr>
-            </table>
-
-            <button>Play set again</button>
-            <br>
-            <button href="/account" class = "button">Return to home</button>
-            
+            <div class = "center-horizontal" id = "gameover_buttons">
+                    <button id = "play_again_button" href="/play">Play set again</button>
+                    <button href="/account" class = "button" id = "return_home_button">Return to home</button>    
+            </div>
         </div>
         <script src="/socket.io/socket.io.js"></script>
         <script  src = "\static\game.js"></script>  

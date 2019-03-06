@@ -170,6 +170,7 @@ socket.on("question timeout", () => {
 })
 
 //display stats
+document.getElementById("gameover_buttons").style.display = "none";
 socket.on("results", (data) => {
     const tableEl = document.getElementById("results-table");
     tableEl.innerHTML = ""
@@ -190,6 +191,16 @@ socket.on("results", (data) => {
         tableEl.appendChild(row);
     }
 })
+
 socket.on("game over", () => {
-    alert("no more questions");
+    showPage("results");
+    const x = document.getElementById("results");
+    x.className = "background-primary";
+    x.style.height = "100vh";
+    document.getElementById("results-table").style.background = "#f2efea";
+    document.getElementById("timer-bar").style.display = "none";
+    document.getElementById("results-banner").style.display = "none";
+    document.getElementById("gameover_buttons").style.display = "block";
+
+    
 })

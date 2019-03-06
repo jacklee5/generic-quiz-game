@@ -33,6 +33,20 @@ module.exports = (isUserAuthenticated, pool) => {
             res.send(results);
         })
     });
+    //get the friends of the current user
+    app.get("/friends", isUserAuthenticated, (req, res) => {
+        pool.query("SELECT user_id, photo, username FROM users, friends WHERE users.user_id = friends.friender AND friends.friendee = ?", [req.user.user_id], (err, results) => {
+            if(err) return console.log(err);
+            res.send(results);
+        })
+    });
+    //get the friends of a specific user
+    app.get("/friends/:userid", (req, res) => {
+        pool.query("SELECT user_id, photo, username FROM users, friends WHERE users.user_id = friends.friender AND friends.friendee = ?", [req.params.userid], (err, results) => {
+            if(err) return console.log(err);
+            res.send(results);
+        })
+    })
     //get sets of other users
     app.get("/sets/:userid", (req, res) => {
         pool.query("SELECT set_id, name, set_creation_date FROM termset WHERE creator_id = ?", [req.params.userid], (err, results, fields) => {

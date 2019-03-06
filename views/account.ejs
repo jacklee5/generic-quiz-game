@@ -58,6 +58,9 @@
             <p>Share this link with your friends: </p>
             <input type = "text" readonly value = "localhost:8000/friend/1203" onclick = "this.select()" id = "friend-url" style = "width:100%;text-align:center">
         </div>
+        <div id = "unfriend-popup" class = "popup">
+            <a id = "unfriend-button"><i class = "material-icons">delete</i>Unfriend</a>
+        </div>
         <script>
             //show the correct user
             //get user id from url
@@ -204,11 +207,35 @@
                         const data = JSON.parse(this.responseText);
                         for(let i = 0; i < data.length; i++){
                             document.getElementById("friends-container").innerHTML += 
-                            `<a href = "/account/${data[i].user_id}">
+                            `<a href = "/account/${data[i].user_id}" id = "friend${data[i].user_id}">
                                 <div class = "friend">
                                     <img class = "pfp" src = "${data[i].photo}" id = "pfp"> <h1>${data[i].username}</h1>
+                                    <i class = "material-icons more-options" data-friendid = "${data[i].user_id}">more_horiz</i>
                                 </div>
                             </a>`
+                        }
+                        //bind listeners on  more buttons
+                        const moreButtons = document.querySelectorAll(".friend .more-options");
+                        for(let i = 0; i < moreButtons.length; i++){
+                            moreButtons[i].addEventListener("click", (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                
+                                const popup = document.getElementById("unfriend-popup");
+                                const friendid = moreButtons[i].dataset.friendid;
+
+                                //hide if already showing
+                                if(window.getComputedStyle(popup, null).display === "block" && curSet === setid) return popup.style.display = "none";
+
+
+                                popup.style.display = "block";
+                                popup.style.position = "absolute";
+                                popup.style.left = `calc(${(e.clientX + window.scrollX)}px - 105px)`;
+                                popup.style.top = (e.clientY + window.scrollY) + "px";
+                                popup.textContent
+
+                                curFriend = friendid;
+                            });
                         }
                         loaded++;
                         console.log("loaded friends");
@@ -221,11 +248,14 @@
 
             //context for popup
             let curSet;
+            let curFriend;
 
             //hide popup if anything else is clicked
             document.body.addEventListener("click", () => {
-                document.getElementById("delete-popup").style.display = "none";
-                document.getElementById("friend-popup").style.display = "none";
+                const popups = document.getElementsByClassName("popup");
+                for(let i = 0; i < popups.length; i++){
+                    popups[i].style.display = "none";
+                }
             })
 
             //delete button
@@ -235,6 +265,16 @@
                 xhttp.send();
 
                 document.getElementById("set" + curSet).style.display = "none";
+            });
+
+            //unfriend button
+            document.getElementById("unfriend-button").addEventListener("click", () => {
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("DELETE", "/api/friends/" + curFriend, true);
+                xhttp.send();
+                console.log(curFriend);
+
+                document.getElementById("friend" + curFriend).style.display = "none";
             })
 
             //add friend button

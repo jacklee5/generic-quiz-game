@@ -41,7 +41,7 @@ module.exports = (isUserAuthenticated, pool) => {
             res.send(results);
         })
     });
-    
+
     //get the friends of the current user
     app.get("/friends", isUserAuthenticated, (req, res) => {
         pool.query("SELECT user_id, photo, username FROM users, friends WHERE users.user_id = friends.friender AND friends.friendee = ?", [req.user.user_id], (err, results) => {
@@ -54,6 +54,12 @@ module.exports = (isUserAuthenticated, pool) => {
         pool.query("SELECT user_id, photo, username FROM users, friends WHERE users.user_id = friends.friender AND friends.friendee = ?", [req.params.userid], (err, results) => {
             if(err) return console.log(err);
             res.send(results);
+        })
+    });
+    //delete a friend
+    app.delete("/friends/:userid", isUserAuthenticated, (req, res) => {
+        pool.query("DELETE FROM friends WHERE friender = ? OR friendee = ?", [req.user.user_id, req.user.user_id], (err) => {
+            if(err) return console.log(err);
         })
     })
 

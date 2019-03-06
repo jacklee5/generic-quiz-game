@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 passport.use(new GoogleStrategy({
         clientID: '610620061218-7o8o31ebmroqhnfa5n9rp16h3a3s65as.apps.googleusercontent.com',
         clientSecret: 'eyr1llCNsCEvwVaBqqLmZ7Nz',
-        callbackURL: PROD ? 'http://genericquizgame.herokuapp.com/' : 'http://localhost:8000/auth/google/callback'
+        callbackURL: PROD ? 'http://genericquizgame.herokuapp.com/auth/google/callback' : 'http://localhost:8000/auth/google/callback'
     },
     (accessToken, refreshToken, profile, done) => {
         const id = profile.id;

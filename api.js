@@ -71,6 +71,7 @@ module.exports = (isUserAuthenticated, pool) => {
             res.send(results[0]);
         })
     });
+    //get friend code of current user
     app.get("/friend-code", isUserAuthenticated, (req, res) => {
         pool.query("SELECT friend_code FROM users WHERE user_id = ?", [req.user.user_id], (err, results) => {
             if(err) return console.log(err);

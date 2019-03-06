@@ -12,6 +12,7 @@ const bodyParser = require("body-parser");
 
 //dev or prod
 const PROD = true;
+console.log(process.env.NODE_ENV);
 
 // cookieSession config
 app.use(cookieSession({

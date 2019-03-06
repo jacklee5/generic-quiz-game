@@ -32,7 +32,7 @@ const getLastInput = () => {
 const createOnTab = (e) => {
     if(e.keyCode === 9){
         e.preventDefault();
-
+        
         lastInput.removeEventListener("keydown", createOnTab);
 
         const el = createTerm();

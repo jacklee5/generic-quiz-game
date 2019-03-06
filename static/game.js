@@ -1,4 +1,3 @@
-
 const answer = 'gay2';
 
 
@@ -205,4 +204,3 @@ socket.on("game over", () => {
 
     
 })
-

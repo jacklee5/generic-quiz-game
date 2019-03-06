@@ -188,7 +188,7 @@ button .material-icons{
 .set p, .set h2{
     margin: 0;
 }
-.set .more-options{
+.set .more-options, .friend .more-options{
     position: absolute;
     top: 50%;
     right: 32px;

@@ -10,6 +10,9 @@ const fs = require("fs");
 const mysql = require('mysql');
 const bodyParser = require("body-parser");
 
+//dev or prod
+const PROD = process.env.NODE_ENV;
+
 // cookieSession config
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000, // One day in milliseconds
@@ -28,10 +31,33 @@ app.use(bodyParser.json());
 passport.use(new GoogleStrategy({
         clientID: '610620061218-7o8o31ebmroqhnfa5n9rp16h3a3s65as.apps.googleusercontent.com',
         clientSecret: 'eyr1llCNsCEvwVaBqqLmZ7Nz',
-        callbackURL: 'http://localhost:8000/auth/google/callback'
+        callbackURL: PROD ? 'http://genericquizgame.herokuapp.com/auth/google/callback' : 'http://localhost:8000/auth/google/callback'
     },
     (accessToken, refreshToken, profile, done) => {
-        done(null, profile); // passes the profile data to serializeUser
+        const id = profile.id;
+        if(cache[id]){
+            done(null, cache[id]);
+            return;
+        }
+        pool.query("SELECT * FROM users WHERE google_id = ?", [id], (err, results, fields) => {
+            if(err) return console.log(err);
+            if(!results[0]){
+                done(null, {
+                    id: googleData[id].id,
+                    photo: googleData[id].photos[0].value
+                });
+                return;
+            }
+            if(googleData[id]) delete googleData[id];
+            const data = {
+                user_id: results[0].user_id,
+                id: results[0].google_id,
+                username: results[0].username,
+                photo: results[0].photo
+            }
+            done(null, data);
+            cache[id] = data;
+        });
     }
 ));
 

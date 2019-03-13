@@ -200,6 +200,6 @@ socket.on("game over", () => {
     document.getElementById("timer-bar").style.display = "none";
     document.getElementById("results-banner").style.display = "none";
     document.getElementById("gameover_buttons").style.display = "block";
-
+    document.getElementById("table_heading").textContent = "Game Over!";
     
 })

@@ -194,15 +194,15 @@
                 <p><b id = "answer-text">scary person</b></p>
             </header>
             <main style = "height: 0">
-                <h2>Current Standings</h2>
+                <h2 id="table_heading">Current Standings</h2>
                 <table class = "center-horizontal" id = "results-table"></table>
             </main>
             <div class = "center-horizontal" id = "gameover_buttons">
-                    <button id = "play_again_button" href="/play">Play set again</button>
-                    <button href="/account" class = "button" id = "return_home_button">Return to home</button>    
+                    <button onclick = "location.reload()" id = "play_again_button">Play set again</button>
+                    <a href="/account"><button class = "button" id = "return_home_button" >Return to home</button></a>    
             </div>
         </div>
         <script src="/socket.io/socket.io.js"></script>
-        <script  src = "\static\game.js"></script>  
+        <script  src = "/static/game.js"></script>  
     </body>
 </html>

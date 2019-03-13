@@ -56,7 +56,7 @@
         <div id = "friend-popup" class = "popup">
             <h1>Add Friend</h1>
             <p>Share this link with your friends: </p>
-            <input type = "text" readonly value = "localhost:8000/friend/1203" onclick = "this.select()" id = "friend-url" style = "width:100%;text-align:center">
+            <input type = "text" readonly onclick = "this.select()" id = "friend-url" style = "width:100%;text-align:center">
         </div>
         <div id = "unfriend-popup" class = "popup">
             <a id = "unfriend-button"><i class = "material-icons">delete</i>Unfriend</a>
@@ -66,12 +66,20 @@
             //get user id from url
             const getUserId = () => {
                 const params = window.location.pathname.split("/");
-                return params[params.length - 1];
+                const temp = params[params.length - 1];
+                return temp === "" ? params[params.length - 2] : temp;
             }
             const userId = getUserId();
             const stopLoading = () => {
                 document.getElementById("loading").style.display = "none";
                 document.getElementById("content").style.display = "block";
+                if(userId !== "account"){
+                    //hide anything that says "my"
+                    const myEls = document.getElementsByClassName("my");
+                    for(let i = 0; i < myEls.length; i++){
+                        myEls[i].style.display = "none";
+                    }
+                }
             }
             //how many things have to load before show
             let LOADS = 3;
@@ -91,12 +99,6 @@
                             const data = JSON.parse(this.responseText);
                             document.getElementById("username").textContent = data.username;
                             document.getElementById("pfp").src = data.photo;
-
-                            //hide anything that says "my"
-                            const myEls = document.getElementsByClassName("my");
-                            for(let i = 0; i < myEls.length; i++){
-                                myEls[i].style.display = "none";
-                            }
 
                             loaded++;
                             console.log("loaded user data");
@@ -137,15 +139,19 @@
                             const p = document.createElement("p");
                             if(sets[i].set_creation_date === 0 || sets[i].set_creation_date == null) p.textContent = "Created at the beginning of time";
                             else p.textContent = `Created ${sets[i].timeSinceCreated}`;
+
+                            const hide = document.createElement("span");
+                            hide.className = "my";
                             
                             const icon = document.createElement("i");
                             icon.className = "material-icons more-options";
                             icon.dataset.setid = id;
                             icon.textContent = "more_horiz";
+                            hide.appendChild(icon);
 
                             container.appendChild(header);
                             container.appendChild(p);
-                            container.appendChild(icon);
+                            container.appendChild(hide);
 
                             document.getElementById("sets-container").appendChild(parent);
                         }
@@ -210,7 +216,7 @@
                             `<a href = "/account/${data[i].user_id}" id = "friend${data[i].user_id}">
                                 <div class = "friend">
                                     <img class = "pfp" src = "${data[i].photo}" id = "pfp"> <h1>${data[i].username}</h1>
-                                    <i class = "material-icons more-options" data-friendid = "${data[i].user_id}">more_horiz</i>
+                                    <span class = "my"><i class = "material-icons more-options" data-friendid = "${data[i].user_id}">more_horiz</i></span>
                                 </div>
                             </a>`
                         }

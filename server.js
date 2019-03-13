@@ -10,6 +10,8 @@ const fs = require("fs");
 const mysql = require('mysql');
 const bodyParser = require("body-parser");
 
+//TODO: make /account/[current user] and /account/ not break
+
 //dev or prod
 const HOST = process.env.NODE_ENV ? "http://genericquizgame.herokuapp.com" : "http://localhost:8000";
 

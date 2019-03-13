@@ -162,6 +162,8 @@
                             moreButtons[i].addEventListener("click", (e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
+
+                                hidePopups();
                                 
                                 const popup = document.getElementById("delete-popup");
                                 const setid = moreButtons[i].dataset.setid
@@ -226,6 +228,8 @@
                             moreButtons[i].addEventListener("click", (e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
+
+                                hidePopups();
                                 
                                 const popup = document.getElementById("unfriend-popup");
                                 const friendid = moreButtons[i].dataset.friendid;
@@ -256,12 +260,16 @@
             let curSet;
             let curFriend;
 
-            //hide popup if anything else is clicked
-            document.body.addEventListener("click", () => {
+            const hidePopups = () => {
                 const popups = document.getElementsByClassName("popup");
                 for(let i = 0; i < popups.length; i++){
                     popups[i].style.display = "none";
                 }
+            }
+
+            //hide popup if anything else is clicked
+            document.body.addEventListener("click", () => {
+                hidePopups();
             })
 
             //delete button
@@ -286,6 +294,8 @@
             //add friend button
             document.getElementById("add-friend-button").addEventListener("click", (e) => {
                 e.stopPropagation();
+
+                hidePopups();
 
                 const popup = document.getElementById("friend-popup");
                 popup.style.display = "block";

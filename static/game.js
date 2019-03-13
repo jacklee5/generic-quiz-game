@@ -1,15 +1,14 @@
-const answer = 'gay2';
-
-
-
-const changeQuestionText = (text) => {
-    var elem = document.getElementById("qstn");
-    if (text === answer){
-        elem.textContent = 'Correct!';
-    } else {
-        elem.textContent = 'No!';
-    }
-}
+//play noises from hell
+var playSound = function(file) {
+    var snd1 = new Audio();
+    var src1 = document.createElement("source");
+    src1.type = "audio/mpeg";
+    src1.src = file;
+    snd1.appendChild(src1);
+    snd1.loop = true;
+    snd1.play();
+};
+playSound("/static/kirb.mp3");
 
 const showPage = (pageId) => {
     const pages = document.getElementsByClassName("page");

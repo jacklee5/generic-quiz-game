@@ -10,8 +10,6 @@ const fs = require("fs");
 const mysql = require('mysql');
 const bodyParser = require("body-parser");
 
-//TODO: make /account/[current user] and /account/ not break
-
 //dev or prod
 const HOST = process.env.NODE_ENV ? "http://genericquizgame.herokuapp.com" : "http://localhost:8000";
 
@@ -193,6 +191,7 @@ app.get("/account", isUserAuthenticated, (req, res) => {
     });
 });
 app.get("/account/:userid", isUserAuthenticated, (req, res) => {
+    if(Number(req.params.userid) === req.user.user_id) return res.redirect("/account");
     res.render("account.ejs", {
         username: req.user.username,
         pfp: req.user.photo

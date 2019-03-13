@@ -1,7 +1,3 @@
-const answer = 'gay2';
-
-
-
 const changeQuestionText = (text) => {
     var elem = document.getElementById("qstn");
     if (text === answer){
@@ -201,6 +197,6 @@ socket.on("game over", () => {
     document.getElementById("timer-bar").style.display = "none";
     document.getElementById("results-banner").style.display = "none";
     document.getElementById("gameover_buttons").style.display = "block";
-
+    document.getElementById("table_heading").textContent = "Game Over!";
     
 })
